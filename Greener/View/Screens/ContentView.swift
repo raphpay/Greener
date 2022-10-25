@@ -6,20 +6,22 @@
 //
 
 import SwiftUI
+import RealmSwift
 
 struct ContentView: View {
     
+    @ObservedResults(Transaction.self) var transactions
+    
     @State private var showSheet = false
-    @State var transactions = [Transaction]()
     
     var body: some View {
         ZStack {
             plusButton
             
             VStack {
-                ForEach(transactions, id: \.self) { transaction in
+                ForEach(transactions) { transaction in
                     HStack {
-                        Text(transaction.type?.emoji ?? "")
+                        Text(transaction.type.emoji)
                         Text(transaction.title)
                     }
                 }
@@ -27,7 +29,7 @@ struct ContentView: View {
         }
         .padding()
         .sheet(isPresented: $showSheet) {
-            AddTransactionView(transactions: $transactions)
+            AddTransactionView(transaction: Transaction())
         }
     }
     
@@ -51,6 +53,8 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(transactions: Transaction.mockData)
+        ContentView()
+            .environment(\.realmConfiguration, Realm.Configuration(inMemoryIdentifier: "previewRealm", schemaVersion: 1))
     }
 }
+

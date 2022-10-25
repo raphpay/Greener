@@ -6,22 +6,23 @@
 //
 
 import SwiftUI
+import RealmSwift
 
 struct AddTransactionView: View {
     
     @Environment(\.dismiss) var dismiss
+    @Environment(\.realm) var realm
     
-    @Binding var transactions: [Transaction]
-    
-    @State private var selectedType: Transaction.TransactionType?
-    @State private var title: String = ""
-    @State private var description: String = ""
+    @ObservedRealmObject var transaction: Transaction
+    @State var libelle = ""
+    @State var selectedType: TransactionType?
     
     var body: some View {
         VStack(spacing: 10) {
             // Should be in a grid
-            ForEach(Transaction.TransactionType.allCases, id: \.self) { type in
+            ForEach(TransactionType.allCases, id: \.self) { type in
                 Button {
+                    transaction.type = type
                     selectedType = type
                 } label: {
                     CategoryButton(type: type, selectedType: $selectedType)
@@ -29,16 +30,13 @@ struct AddTransactionView: View {
                 .tint(.primary)
             }
             
-            TextField("Transaction name", text: $title)
+            TextField("Transaction name", text: $transaction.title)
                 .textFieldStyle(.roundedBorder)
-            TextField("Description ( optionnal )", text: $description)
+            TextField("Description ( optional )", text: $libelle)
                 .textFieldStyle(.roundedBorder)
             
             Button {
-                // Save the transaction
-                let transaction = Transaction(title: title, description: description, type: selectedType)
-                transactions.append(transaction)
-                dismiss()
+                saveTransaction()
             } label: {
                 Text("Add the transaction")
                     .foregroundColor(.white)
@@ -52,10 +50,22 @@ struct AddTransactionView: View {
         }
         .padding()
     }
+    
+    func saveTransaction() {
+        try? realm.write({
+            if libelle != "" {
+                transaction.libelle = libelle
+            }
+            realm.add(transaction)
+        })
+        
+        dismiss()
+    }
 }
 
 struct AddTransactionView_Previews: PreviewProvider {
     static var previews: some View {
-        AddTransactionView(transactions: .constant([]))
+        AddTransactionView(transaction: Transaction.transaction1)
+            .environment(\.realmConfiguration, Realm.Configuration(inMemoryIdentifier: "previewRealm", schemaVersion: 1))
     }
 }

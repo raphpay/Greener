@@ -9,8 +9,8 @@ import SwiftUI
 
 struct CategoryButton: View {
     
-    let type: Transaction.TransactionType
-    @Binding var selectedType: Transaction.TransactionType?
+    let type: TransactionType
+    @Binding var selectedType: TransactionType?
     
     var body: some View {
         HStack {
