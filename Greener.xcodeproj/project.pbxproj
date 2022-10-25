@@ -46,6 +46,49 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8607F59B29081BAD00557EFA /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				86279DFC2906B881002A47EC /* Transaction.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		8607F59C29081BB100557EFA /* View */ = {
+			isa = PBXGroup;
+			children = (
+				8607F59F29081BD300557EFA /* Components */,
+				8607F59E29081BCD00557EFA /* Screens */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		8607F59D29081BBC00557EFA /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				8607F59929081A2F00557EFA /* RealmMigrator.swift */,
+				86279DFA2906B5D0002A47EC /* String+Ext.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		8607F59E29081BCD00557EFA /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				8661BA872906829900B48327 /* ContentView.swift */,
+				86279DF82906B58B002A47EC /* AddTransactionView.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		8607F59F29081BD300557EFA /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				86279DFE2906B895002A47EC /* CategoryButton.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 		8661BA792906829900B48327 = {
 			isa = PBXGroup;
 			children = (
@@ -65,14 +108,11 @@
 		8661BA842906829900B48327 /* Greener */ = {
 			isa = PBXGroup;
 			children = (
-				8661BA852906829900B48327 /* GreenerApp.swift */,
-				8661BA872906829900B48327 /* ContentView.swift */,
-				86279DF82906B58B002A47EC /* AddTransactionView.swift */,
-				86279DFC2906B881002A47EC /* Transaction.swift */,
-				86279DFE2906B895002A47EC /* CategoryButton.swift */,
-				8607F59929081A2F00557EFA /* RealmMigrator.swift */,
-				86279DFA2906B5D0002A47EC /* String+Ext.swift */,
 				8661BA892906829B00B48327 /* Assets.xcassets */,
+				8661BA852906829900B48327 /* GreenerApp.swift */,
+				8607F59B29081BAD00557EFA /* Model */,
+				8607F59C29081BB100557EFA /* View */,
+				8607F59D29081BBC00557EFA /* Utils */,
 				8661BA8B2906829B00B48327 /* Preview Content */,
 			);
 			path = Greener;
