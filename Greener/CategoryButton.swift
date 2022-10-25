@@ -27,6 +27,6 @@ struct CategoryButton: View {
 
 struct CategoryButton_Previews: PreviewProvider {
     static var previews: some View {
-        CategoryButton()
+        CategoryButton(type: .digital, selectedType: .constant(.digital))
     }
 }
