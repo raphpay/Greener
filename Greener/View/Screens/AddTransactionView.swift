@@ -63,9 +63,9 @@ struct AddTransactionView: View {
     }
 }
 
-// TODO: Find how to use previews with mocked Realm data
-//struct AddTransactionView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        AddTransactionView(transactions: .constant([]))
-//    }
-//}
+struct AddTransactionView_Previews: PreviewProvider {
+    static var previews: some View {
+        AddTransactionView(transaction: Transaction.transaction1)
+            .environment(\.realmConfiguration, Realm.Configuration(inMemoryIdentifier: "previewRealm", schemaVersion: 1))
+    }
+}

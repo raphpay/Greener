@@ -51,10 +51,10 @@ struct ContentView: View {
     }
 }
 
-// TODO: Find how to use previews with mocked Realm data
-//struct ContentView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ContentView(transactions: )
-//    }
-//}
-//
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+            .environment(\.realmConfiguration, Realm.Configuration(inMemoryIdentifier: "previewRealm", schemaVersion: 1))
+    }
+}
+
