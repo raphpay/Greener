@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		8607F5962907E44300557EFA /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 8607F5952907E44300557EFA /* Realm */; };
 		8607F5982907E44300557EFA /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 8607F5972907E44300557EFA /* RealmSwift */; };
+		8607F59A29081A2F00557EFA /* RealmMigrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8607F59929081A2F00557EFA /* RealmMigrator.swift */; };
 		86279DF92906B58B002A47EC /* AddTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86279DF82906B58B002A47EC /* AddTransactionView.swift */; };
 		86279DFB2906B5D0002A47EC /* String+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86279DFA2906B5D0002A47EC /* String+Ext.swift */; };
 		86279DFD2906B881002A47EC /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86279DFC2906B881002A47EC /* Transaction.swift */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8607F59929081A2F00557EFA /* RealmMigrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmMigrator.swift; sourceTree = "<group>"; };
 		86279DF82906B58B002A47EC /* AddTransactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTransactionView.swift; sourceTree = "<group>"; };
 		86279DFA2906B5D0002A47EC /* String+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ext.swift"; sourceTree = "<group>"; };
 		86279DFC2906B881002A47EC /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
@@ -68,6 +70,7 @@
 				86279DF82906B58B002A47EC /* AddTransactionView.swift */,
 				86279DFC2906B881002A47EC /* Transaction.swift */,
 				86279DFE2906B895002A47EC /* CategoryButton.swift */,
+				8607F59929081A2F00557EFA /* RealmMigrator.swift */,
 				86279DFA2906B5D0002A47EC /* String+Ext.swift */,
 				8661BA892906829B00B48327 /* Assets.xcassets */,
 				8661BA8B2906829B00B48327 /* Preview Content */,
@@ -162,6 +165,7 @@
 			files = (
 				86279DF92906B58B002A47EC /* AddTransactionView.swift in Sources */,
 				8661BA882906829900B48327 /* ContentView.swift in Sources */,
+				8607F59A29081A2F00557EFA /* RealmMigrator.swift in Sources */,
 				86279DFB2906B5D0002A47EC /* String+Ext.swift in Sources */,
 				86279DFF2906B895002A47EC /* CategoryButton.swift in Sources */,
 				8661BA862906829900B48327 /* GreenerApp.swift in Sources */,
