@@ -6,34 +6,32 @@
 //
 
 import Foundation
+import RealmSwift
 
-struct Transaction: Hashable {
-    var title: String
-    var description: String?
-    var type: TransactionType?
+class Transaction: Object, ObjectKeyIdentifiable {
+    @Persisted(primaryKey: true) var id: ObjectId
+    @Persisted var title: String
+    @Persisted var libelle: String?
+    @Persisted var type: TransactionType
+}
+
+enum TransactionType: String, CaseIterable, PersistableEnum {
+    case transport, housing, food, digital, various
     
-    enum TransactionType: String, CaseIterable {
-        case transport, housing, food, digital, various
-        
-        var emoji: String {
-            switch self {
-                case .transport:
-                    return "🚗"
-                case .housing:
-                    return "🏡"
-                case .food:
-                    return "🍽"
-                case .digital:
-                    return "📱"
-                case .various:
-                    return "📦"
-            }
+    var emoji: String {
+        switch self {
+            case .transport:
+                return "🚗"
+            case .housing:
+                return "🏡"
+            case .food:
+                return "🍽"
+            case .digital:
+                return "📱"
+            case .various:
+                return "📦"
         }
     }
-    
-    static let mockData = [
-        Transaction(title: "Car", type: .transport),
-        Transaction(title: "Grocery", type: .food),
-        Transaction(title: "New phone", type: .digital)
-    ]
 }
+
+
