@@ -89,3 +89,4 @@ fastlane/test_output
 
 iOSInjectionProject/
 Greener.xcodeproj/project.xcworkspace/xcuserdata/raphaelpayet.xcuserdatad/UserInterfaceState.xcuserstate
+.DS_Store
