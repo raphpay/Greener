@@ -8,14 +8,15 @@
 import Foundation
 
 struct Transportation: Codable, Identifiable {
-    let id: Int
+    var id: Int
     let name: String
-    let emissions: Emissions
+    var emissions: Emissions
     let source: String?
     let emoji: Emoji?
     let description: String?
     let carpool: Int?
     let display: Display?
+    var isDuplicated: Bool? = false
     
     var type: TransportationType? {
         switch id {
@@ -58,6 +59,18 @@ struct Transportation: Codable, Identifiable {
         }
     }
     
+    var maximumCarpool: Int? {
+        switch type {
+        case .bike:
+            return 2
+        case .carThermal:
+            return 5
+        case .carElectric:
+            return 5
+        default: return 0
+        }
+    }
+    
     enum TransportationType: String, Codable {
         case plane, tgv, intercite, carThermal, carElectric
         case autocar, walkOrBike, bikeOrElectricScooter, busThermal, tramway
@@ -67,7 +80,7 @@ struct Transportation: Codable, Identifiable {
 }
 
 struct Emissions: Codable {
-    let kgco2e: Double
+    var kgco2e: Double
 }
 
 struct Emoji: Codable {

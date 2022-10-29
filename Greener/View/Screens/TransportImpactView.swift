@@ -11,15 +11,19 @@ struct TransportImpactView: View {
     
     @State private var distance: Double = 100
     @State private var transportations: [Transportation] = []
+    @State private var showAllTransports = false
+    @State private var showCarpool = false
     
     var body: some View {
         NavigationView {
             ScrollView {
                 slider
                 
+                buttons
+                
                 list
             }
-                .navigationTitle("Impact du transport")
+            .navigationTitle("Impact du transport")
         }
     }
     
@@ -32,19 +36,14 @@ struct TransportImpactView: View {
                     if distance - 10 > 0 {
                         distance -= 10
                     }
+                    updateTransportations()
                 } label: {
                     Image(systemName: "minus.circle")
                 }
 
                 Slider(value: $distance, in: 0...1000) { editing in
                     if !editing {
-                        NetworkService.shared.get(for: distance) { transportations in
-                            if let transportations {
-                                DispatchQueue.main.async {
-                                    self.transportations = transportations.sorted(by: { $0.emissions.kgco2e < $1.emissions.kgco2e })
-                                }
-                            }
-                        }
+                        updateTransportations()
                     }
                 }
                 
@@ -52,12 +51,36 @@ struct TransportImpactView: View {
                     if distance + 10 < 1000 {
                         distance += 10
                     }
+                    updateTransportations()
                 } label: {
                     Image(systemName: "plus.circle")
                 }
             }
         }
         .padding()
+    }
+    
+    var buttons: some View {
+        
+        VStack(alignment: .leading, spacing: 20) {
+            Button {
+                showAllTransports.toggle()
+                updateTransportations()
+            } label: {
+                Image(systemName: showAllTransports ? "checkmark.rectangle.fill" : "rectangle")
+                Text("Afficher tous les modes de transport")
+                    .foregroundColor(.primary)
+            }
+            
+            Button {
+                showCarpool.toggle()
+                updateTransportations()
+            } label: {
+                Image(systemName: showCarpool ? "checkmark.rectangle.fill" : "rectangle")
+                Text("Afficher le covoiturage")
+                    .foregroundColor(.primary)
+            }
+        }
     }
     
     var list: some View {
@@ -72,6 +95,16 @@ struct TransportImpactView: View {
                     }
                     Text(transportation.name)
                     Text("\(transportation.emissions.kgco2e.rounded(to: 2)) kg CO2e")
+                }
+            }
+        }
+    }
+    
+    func updateTransportations() {
+        NetworkService.shared.get(for: distance, showAllTransports: showAllTransports, showCarpool: showCarpool) { transportations in
+            if let transportations {
+                DispatchQueue.main.async {
+                    self.transportations = transportations.sorted(by: { $0.emissions.kgco2e < $1.emissions.kgco2e })
                 }
             }
         }
