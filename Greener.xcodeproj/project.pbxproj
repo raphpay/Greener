@@ -21,6 +21,8 @@
 		8661BA882906829900B48327 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8661BA872906829900B48327 /* ContentView.swift */; };
 		8661BA8A2906829B00B48327 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8661BA892906829B00B48327 /* Assets.xcassets */; };
 		8661BA8D2906829B00B48327 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8661BA8C2906829B00B48327 /* Preview Assets.xcassets */; };
+		86F2F5042909605500EFE5F7 /* TransportImpactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86F2F5032909605500EFE5F7 /* TransportImpactView.swift */; };
+		86F2F506290961ED00EFE5F7 /* Double+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86F2F505290961ED00EFE5F7 /* Double+Ext.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +38,8 @@
 		8661BA872906829900B48327 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		8661BA892906829B00B48327 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8661BA8C2906829B00B48327 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		86F2F5032909605500EFE5F7 /* TransportImpactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransportImpactView.swift; sourceTree = "<group>"; };
+		86F2F505290961ED00EFE5F7 /* Double+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Ext.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +79,7 @@
 			isa = PBXGroup;
 			children = (
 				8607F59929081A2F00557EFA /* RealmMigrator.swift */,
+				86F2F505290961ED00EFE5F7 /* Double+Ext.swift */,
 				86279DFA2906B5D0002A47EC /* String+Ext.swift */,
 			);
 			path = Utils;
@@ -84,6 +89,7 @@
 			isa = PBXGroup;
 			children = (
 				8661BA872906829900B48327 /* ContentView.swift */,
+				86F2F5032909605500EFE5F7 /* TransportImpactView.swift */,
 				86279DF82906B58B002A47EC /* AddTransactionView.swift */,
 			);
 			path = Screens;
@@ -213,9 +219,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				86F2F5042909605500EFE5F7 /* TransportImpactView.swift in Sources */,
 				8607F5A629082C0500557EFA /* Transportation.swift in Sources */,
 				86279DF92906B58B002A47EC /* AddTransactionView.swift in Sources */,
 				8661BA882906829900B48327 /* ContentView.swift in Sources */,
+				86F2F506290961ED00EFE5F7 /* Double+Ext.swift in Sources */,
 				8607F5A1290821A900557EFA /* NetworkService.swift in Sources */,
 				8607F59A29081A2F00557EFA /* RealmMigrator.swift in Sources */,
 				86279DFB2906B5D0002A47EC /* String+Ext.swift in Sources */,

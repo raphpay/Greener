@@ -13,7 +13,7 @@ class NetworkService {
     
     let urlString = "https://api.monimpacttransport.fr/beta/getEmissionsPerDistance?"
     
-    func get(for distance: Double) {
+    func get(for distance: Double, closure: @escaping (([Transportation]?) -> Void)) {
         var finalURL = "\(urlString)km=\(distance)"
         finalURL += "&filter=smart" // Could also be "&filter=all"
         finalURL += "&fields=source,emoji,description,carpool,display"
@@ -21,8 +21,7 @@ class NetworkService {
             guard let data = response.data else { return }
             do {
                 let apiResponse = try? JSONDecoder().decode([Transportation].self, from: data)
-                // TODO: To be handle in the UI, as a callback/completionHandler
-                print(apiResponse)
+                closure(apiResponse)
             }
         }
     }

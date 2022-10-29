@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Transportation: Codable {
+struct Transportation: Codable, Identifiable {
     let id: Int
     let name: String
     let emissions: Emissions

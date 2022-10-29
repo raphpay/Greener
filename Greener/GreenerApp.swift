@@ -11,8 +11,9 @@ import SwiftUI
 struct GreenerApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environment(\.realmConfiguration, RealmMigrator.configuration)
+//            ContentView()
+//                .environment(\.realmConfiguration, RealmMigrator.configuration)
+            TransportImpactView()
         }
     }
 }
