@@ -17,6 +17,8 @@ struct Transportation: Codable, Identifiable {
     let carpool: Int?
     let display: Display?
     var isDuplicated: Bool? = false
+    var actualCarpool: Int? = 0
+    var actualEmissions: Double? = 0
     
     var type: TransportationType? {
         switch id {

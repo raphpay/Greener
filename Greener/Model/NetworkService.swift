@@ -14,7 +14,7 @@ class NetworkService {
     let urlString = "https://api.monimpacttransport.fr/beta/getEmissionsPerDistance?"
     
     func get(for distance: Double, showAllTransports: Bool = false, showCarpool: Bool = false, closure: @escaping (([Transportation]?) -> Void)) {
-        var url = createURL(for: distance, showAllTransports: showAllTransports, showCarpool: showCarpool)
+        let url = createURL(for: distance, showAllTransports: showAllTransports, showCarpool: showCarpool)
         AF.request(url).response { response in
             guard let data = response.data else { return }
             do {
@@ -41,10 +41,11 @@ class NetworkService {
             if object.carpool != nil {
                 // Duplicate object
                 var newObject = object
-                newObject.id = response.count // This is in conflict with the way we set the type
+                newObject.id = Int.random(in: 100...200)
                 newObject.isDuplicated = true
                 // Calculate the new emission with the default number of carpool ( 2 people using the transportation )
-                newObject.emissions.kgco2e = self.divideEmissions(by: 2, sourceEmission: object.emissions.kgco2e)
+                newObject.actualEmissions = self.divideEmissions(by: 2, sourceEmission: object.emissions.kgco2e)
+                newObject.actualCarpool = object.carpool
                 // Append the object to the response
                 newResponse.append(newObject)
             }
