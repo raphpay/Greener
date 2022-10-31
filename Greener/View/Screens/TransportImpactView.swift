@@ -9,18 +9,13 @@ import SwiftUI
 
 struct TransportImpactView: View {
     
-    @State private var distance: Double = 100
-    @State private var transportations: [Transportation] = []
-    @State private var showAllTransports = false
-    @State private var showCarpool = false
+    @ObservedObject var viewModel = TransportImpactViewViewModel()
     
     var body: some View {
         NavigationView {
             ScrollView {
                 slider
-                
                 buttons
-                
                 list
             }
             .navigationTitle("Impact du transport")
@@ -29,29 +24,29 @@ struct TransportImpactView: View {
     
     var slider: some View {
         VStack {
-            Text("Distance: \(distance.rounded(to: 2))")
+            Text("Distance: \(viewModel.distance.rounded(to: 2))")
             
             HStack {
                 Button {
-                    if distance - 10 > 0 {
-                        distance -= 10
+                    if viewModel.distance - 10 > 0 {
+                        viewModel.distance -= 10
                     }
-                    updateTransportations()
+                    viewModel.updateTransportations()
                 } label: {
                     Image(systemName: "minus.circle")
                 }
 
-                Slider(value: $distance, in: 0...1000) { editing in
+                Slider(value: $viewModel.distance, in: 0...1000) { editing in
                     if !editing {
-                        updateTransportations()
+                        viewModel.updateTransportations()
                     }
                 }
                 
                 Button {
-                    if distance + 10 < 1000 {
-                        distance += 10
+                    if viewModel.distance + 10 < 1000 {
+                        viewModel.distance += 10
                     }
-                    updateTransportations()
+                    viewModel.updateTransportations()
                 } label: {
                     Image(systemName: "plus.circle")
                 }
@@ -64,19 +59,19 @@ struct TransportImpactView: View {
         
         VStack(alignment: .leading, spacing: 20) {
             Button {
-                showAllTransports.toggle()
-                updateTransportations()
+                viewModel.showAllTransports.toggle()
+                viewModel.updateTransportations()
             } label: {
-                Image(systemName: showAllTransports ? "checkmark.rectangle.fill" : "rectangle")
+                Image(systemName: viewModel.showAllTransports ? "checkmark.rectangle.fill" : "rectangle")
                 Text("Afficher tous les modes de transport")
                     .foregroundColor(.primary)
             }
             
             Button {
-                showCarpool.toggle()
-                updateTransportations()
+                viewModel.showCarpool.toggle()
+                viewModel.updateTransportations()
             } label: {
-                Image(systemName: showCarpool ? "checkmark.rectangle.fill" : "rectangle")
+                Image(systemName: viewModel.showCarpool ? "checkmark.rectangle.fill" : "rectangle")
                 Text("Afficher le covoiturage")
                     .foregroundColor(.primary)
             }
@@ -85,8 +80,8 @@ struct TransportImpactView: View {
     
     var list: some View {
         VStack {
-            ForEach(0..<transportations.count, id: \.self) { index in
-                let transportation = transportations[index]
+            ForEach(0..<viewModel.transportations.count, id: \.self) { index in
+                let transportation = viewModel.transportations[index]
                 VStack {
                     HStack {
                         if let mainEmoji = transportation.emoji?.main {
@@ -107,8 +102,8 @@ struct TransportImpactView: View {
                        let actualCarpool = transportation.actualCarpool {
                         HStack {
                             Button {
-                                calculateCarpool(for: index, action: .minus)
-                                sortTransportations(self.transportations)
+                                viewModel.calculateCarpool(for: index, action: .minus)
+                                viewModel.sortTransportations(viewModel.transportations)
                             } label: {
                                 Image(systemName: "minus")
                             }
@@ -116,8 +111,8 @@ struct TransportImpactView: View {
                             Text("\(actualCarpool)")
                             
                             Button {
-                                calculateCarpool(for: index, action: .plus)
-                                sortTransportations(self.transportations)
+                                viewModel.calculateCarpool(for: index, action: .plus)
+                                viewModel.sortTransportations(viewModel.transportations)
                             } label: {
                                 Image(systemName: "plus")
                             }
@@ -126,48 +121,6 @@ struct TransportImpactView: View {
                 }
             }
         }
-    }
-    
-    func updateTransportations() {
-        NetworkService.shared.get(for: distance, showAllTransports: showAllTransports, showCarpool: showCarpool) { transportations in
-            if let transportations {
-                sortTransportations(transportations)
-            }
-        }
-    }
-    
-    func sortTransportations(_ transportationCollection: [Transportation]) {
-        DispatchQueue.main.async {
-            self.transportations = transportationCollection.sorted(by: { current, next in
-                if let currentActualEmissions = current.actualEmissions {
-                    if let nextActualEmissions = next.actualEmissions {
-                        return currentActualEmissions < nextActualEmissions
-                    }
-                    return currentActualEmissions < next.emissions.kgco2e
-                }
-                return current.emissions.kgco2e < next.emissions.kgco2e
-            })
-        }
-    }
-    
-    func calculateCarpool(for index: Int, action: Action) {
-        var transportation = transportations[index]
-        guard var actualCarpool = transportation.actualCarpool,
-              let maximumCarpool = transportation.carpool else { return }
-        
-        if action == .plus {
-            guard actualCarpool + 1 <= maximumCarpool else { return }
-            actualCarpool += 1
-        } else if action == .minus {
-            guard actualCarpool - 1 > 0 else { return }
-            actualCarpool -= 1
-        }
-        
-        transportation.actualCarpool = actualCarpool
-        
-        transportation.actualEmissions = NetworkService.shared.divideEmissions(by: actualCarpool, sourceEmission: transportation.emissions.kgco2e)
-        
-        transportations[index] = transportation
     }
 }
 
