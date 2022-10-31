@@ -85,16 +85,44 @@ struct TransportImpactView: View {
     
     var list: some View {
         VStack {
-            ForEach(transportations) { transportation in
-                HStack {
-                    if let mainEmoji = transportation.emoji?.main {
-                        Text(mainEmoji)
-                        if let secondaryEmoji = transportation.emoji?.secondary {
-                            Text(secondaryEmoji)
+            ForEach(0..<transportations.count, id: \.self) { index in
+                let transportation = transportations[index]
+                VStack {
+                    HStack {
+                        if let mainEmoji = transportation.emoji?.main {
+                            Text(mainEmoji)
+                            if let secondaryEmoji = transportation.emoji?.secondary {
+                                Text(secondaryEmoji)
+                            }
+                        }
+                        Text(transportation.name)
+                        if transportation.actualEmissions != nil {
+                            Text("\(transportation.actualEmissions!.rounded(to: 2)) kg CO2e")
+                        } else {
+                            Text("\(transportation.emissions.kgco2e.rounded(to: 2)) kg CO2e")
                         }
                     }
-                    Text(transportation.name)
-                    Text("\(transportation.emissions.kgco2e.rounded(to: 2)) kg CO2e")
+                    
+                    if transportation.isDuplicated != nil,
+                       let actualCarpool = transportation.actualCarpool {
+                        HStack {
+                            Button {
+                                calculateCarpool(for: index, action: .minus)
+                                sortTransportations(self.transportations)
+                            } label: {
+                                Image(systemName: "minus")
+                            }
+                            
+                            Text("\(actualCarpool)")
+                            
+                            Button {
+                                calculateCarpool(for: index, action: .plus)
+                                sortTransportations(self.transportations)
+                            } label: {
+                                Image(systemName: "plus")
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -103,12 +131,48 @@ struct TransportImpactView: View {
     func updateTransportations() {
         NetworkService.shared.get(for: distance, showAllTransports: showAllTransports, showCarpool: showCarpool) { transportations in
             if let transportations {
-                DispatchQueue.main.async {
-                    self.transportations = transportations.sorted(by: { $0.emissions.kgco2e < $1.emissions.kgco2e })
-                }
+                sortTransportations(transportations)
             }
         }
     }
+    
+    func sortTransportations(_ transportationCollection: [Transportation]) {
+        DispatchQueue.main.async {
+            self.transportations = transportationCollection.sorted(by: { current, next in
+                if let currentActualEmissions = current.actualEmissions {
+                    if let nextActualEmissions = next.actualEmissions {
+                        return currentActualEmissions < nextActualEmissions
+                    }
+                    return currentActualEmissions < next.emissions.kgco2e
+                }
+                return current.emissions.kgco2e < next.emissions.kgco2e
+            })
+        }
+    }
+    
+    func calculateCarpool(for index: Int, action: Action) {
+        var transportation = transportations[index]
+        guard var actualCarpool = transportation.actualCarpool,
+              let maximumCarpool = transportation.carpool else { return }
+        
+        if action == .plus {
+            guard actualCarpool + 1 <= maximumCarpool else { return }
+            actualCarpool += 1
+        } else if action == .minus {
+            guard actualCarpool - 1 > 0 else { return }
+            actualCarpool -= 1
+        }
+        
+        transportation.actualCarpool = actualCarpool
+        
+        transportation.actualEmissions = NetworkService.shared.divideEmissions(by: actualCarpool, sourceEmission: transportation.emissions.kgco2e)
+        
+        transportations[index] = transportation
+    }
+}
+
+enum Action {
+    case minus, plus
 }
 
 struct TransportImpactView_Previews: PreviewProvider {

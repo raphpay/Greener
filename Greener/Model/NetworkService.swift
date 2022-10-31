@@ -12,6 +12,7 @@ class NetworkService {
     static let shared = NetworkService()
     
     let urlString = "https://api.monimpacttransport.fr/beta/getEmissionsPerDistance?"
+    let minimumCarpool = 2
     
     func get(for distance: Double, showAllTransports: Bool = false, showCarpool: Bool = false, closure: @escaping (([Transportation]?) -> Void)) {
         let url = createURL(for: distance, showAllTransports: showAllTransports, showCarpool: showCarpool)
@@ -44,8 +45,8 @@ class NetworkService {
                 newObject.id = Int.random(in: 100...200)
                 newObject.isDuplicated = true
                 // Calculate the new emission with the default number of carpool ( 2 people using the transportation )
-                newObject.actualEmissions = self.divideEmissions(by: 2, sourceEmission: object.emissions.kgco2e)
-                newObject.actualCarpool = object.carpool
+                newObject.actualEmissions = self.divideEmissions(by: minimumCarpool, sourceEmission: object.emissions.kgco2e)
+                newObject.actualCarpool = minimumCarpool
                 // Append the object to the response
                 newResponse.append(newObject)
             }
